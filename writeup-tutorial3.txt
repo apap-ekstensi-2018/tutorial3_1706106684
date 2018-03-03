@@ -1,0 +1,75 @@
+Implementasi selectStudent:
+@Override
+public StudentModel selectStudent(String npm) {
+	for (int i = 0; i < studentList.size(); i++) {
+		if (studentList.get(i).getNpm().equals(npm)) {
+			return studentList.get(i);
+		}
+	}
+	return null;
+}
+
+Pertanyaan 1:
+Program berjalan normal dan data berhasil disimpan.
+
+Pertanyaan 2:
+Program mengalami error karena data gpa tidak dimasukkan.
+
+Pertanyaan 3:
+Data student muncul
+
+Pertanyaan 4:
+Data student tidak muncul karena program diberhentikan sehingga data student di memori hilang.
+
+Pertanyaan 5:
+Ya data student muncul.
+
+Pertanyaan 6:
+Ya semua data student muncul.
+
+Latihan 1:
+1. Merubah routing menjadi @RequestMapping(value = "/student/view/{npm}")
+2. Merubah method view menjadi :
+public String view(@PathVariable Optional<String> npm, Model model) {
+	if (npm.isPresent()) {
+		StudentModel student = studentService.selectStudent(npm.get());
+		model.addAttribute("student", student);
+	}
+
+	return "view";
+}
+
+Latihan 2:
+1. Menambahkan kode berikut di StudentService 
+void deleteStudent(String npm);
+
+2. Menambahkan kode berikut di InMemoryStudent
+@Override
+public void deleteStudent(String npm) {
+	for (int i = 0; i < studentList.size(); i++) {
+		if (studentList.get(i).getNpm().equals(npm)) {
+			studentList.remove(i);
+		}
+	}
+}
+
+3. Menambahkan kode berikut di StudentController
+@RequestMapping(value = "/student/delete/{npm}")
+public String delete(@PathVariable Optional<String> npm, Model model) {
+	if (npm.isPresent()) {
+		studentService.deleteStudent(npm.get());
+	}
+
+	return "delete";
+}
+
+4. Menambahkan kode berikut di delete.html
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Delete</title>
+</head>
+<body>
+	<h2>Data berhasil dihapus</h2>
+</body>
+</html>
